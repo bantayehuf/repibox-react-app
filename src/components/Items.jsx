@@ -5,73 +5,90 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import InfiniteScroll from "react-infinite-scroller";
 
 import { ItemLoadingSpinner } from "../lib/LoadingSpinner";
 import Item from "./Item";
-import { API } from "../utils/config";
 import { ErrorMessages } from "../lib/ErrorMessages";
-import { loadedItemHandler } from "../redux-Slices/itemsSlice";
+import { requestResultHandler } from "../redux-Slices/itemsSlice";
+import { fetchAPI } from "../lib/fetchAPI";
 
 export default function Items() {
   // Using redux as state manager may not be needed,
   // but I want to show that I have expriance to use redux.
   const dispatch = useDispatch();
-  const { page, has_next_page, posts } = useSelector((state) => state);
+  const { page, has_next_page, searchingItem, posts, error } = useSelector(
+    (state) => state
+  );
 
   const [itemsLoading, setItemsLoading] = useState(false);
-  const [error, setError] = useState({ hasError: false, message: "" });
-  /**
-   * Fetch data (recipes) from API
-   * @param {string} page - The next page session
-   */
-  const fetchItems = async (inPage) => {
+
+  const memoizedFetchItemsCallback = useCallback(async () => {
     setItemsLoading(true);
 
-    try {
-      const response = await API.get("recipes", {
-          params: {
-              page: inPage
-          }
-      });
-      const data = response.data;
+    const data = await fetchAPI(searchingItem, page);
 
+    if (data.success) {
       dispatch(
-        loadedItemHandler({
+        requestResultHandler({
           page: data.page,
           has_next_page: data.has_next_page,
+          searchingItem: { ...searchingItem },
           posts: [...posts, ...data.posts],
+          error: {
+            hasError: false,
+            errorMessage: "",
+          },
         })
       );
-    } catch (error) {
-      if (!error.response) {
-        setError({ hasError: true, message: "Service is not available." });
-      } else {
-        setError({ hasError: true, message: "Failed to load the content." });
-      }
+    } else {
+      dispatch(
+        requestResultHandler({
+          page: "",
+          has_next_page: false,
+          searchingItem: {
+            searching: false,
+            query: "",
+          },
+          posts: [],
+          error: {
+            hasError: true,
+            errorMessage: data.errorMessage,
+          },
+        })
+      );
     }
 
     setItemsLoading(false);
-  };
-
-  const memoizedFetchItemsCallback = useCallback(fetchItems, [page]);
+  }, [page, posts, searchingItem, error]);
 
   useEffect(() => {
-    memoizedFetchItemsCallback(page);
+    memoizedFetchItemsCallback();
   }, []);
 
   return (
     <div className="pb-8">
       {error.hasError ? (
-        <ErrorMessages message={error.message} />
+        <ErrorMessages message={error.errorMessage} />
       ) : (
-        <div className="grid">
-          {posts.map((post, index) => (
-            <Item key={index} post={post}/>
-          ))}
-        </div>
-      )}
+        <>
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={memoizedFetchItemsCallback}
+            hasMore={has_next_page}
+            // loader={<ItemLoadingSpinner className="pt-3" key={0} />}
+            initialLoad={false}
+          >
+            <div className="grid">
+              {posts.map((post, index) => (
+                <Item key={index} post={post} />
+              ))}
+            </div>
+          </InfiniteScroll>
 
-      {itemsLoading && <ItemLoadingSpinner className="pt-3" />}
+          {itemsLoading && <ItemLoadingSpinner className="pt-3" key={0} />}
+        </>
+      )}
     </div>
   );
 }

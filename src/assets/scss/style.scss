@@ -13,6 +13,10 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 5px;
 }
 
+.app-header a {
+    text-decoration: none;
+}
+
 .app-body {
     margin-top: 7rem;
 }
@@ -47,7 +51,7 @@
 
 .p-card-footer {
     font-size: small !important;
-    padding-top: 1px!important;
+    padding-top: 1px !important;
 }
 
 .p-card-footer a {
@@ -56,4 +60,8 @@
 
 .p-card-footer a:hover {
     text-decoration: underline;
+}
+
+.grid-items {
+    display: flex;
 }

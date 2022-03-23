@@ -16,7 +16,7 @@ export default function Item({ post }) {
   );
   return (
     <>
-      <div className="col-12 md:col-6 lg:col-4 xl:col-3">
+      <div className="grid-items col-12 md:col-6 lg:col-4 xl:col-3">
         <Card
           title={post.post_title}
           subTitle={description}
