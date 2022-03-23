@@ -1,0 +1,59 @@
+@import 'primeflex/primeflex.scss';
+
+.main {
+    position: relative;
+    min-height: 98vh;
+}
+
+.app-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 5px;
+}
+
+.app-body {
+    margin-top: 7rem;
+}
+
+@media (min-width: 768px) {
+    .app-body {
+        margin-top: 5rem;
+    }
+}
+
+.app-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.p-card-title {
+    font-size: 0.8rem !important;
+    margin-top: 1px !important;
+}
+
+.p-card-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+}
+
+.p-card-subtitle {
+    font-size: 0.7rem !important;
+}
+
+.p-card-footer {
+    font-size: small !important;
+    padding-top: 1px!important;
+}
+
+.p-card-footer a {
+    text-decoration: none;
+}
+
+.p-card-footer a:hover {
+    text-decoration: underline;
+}
