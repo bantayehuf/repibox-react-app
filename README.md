@@ -4,7 +4,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### used RreactPrime UI Library to create component
+### used ReactPrime UI Library to create component
 https://www.primefaces.org/primereact/
 
 ## How to setup
