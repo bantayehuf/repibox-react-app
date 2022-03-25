@@ -22,7 +22,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.\
 Make sure CROSS-Origin policy of your browser is disabled.
 
 # Remaining TODO items
-1. Progress simulation spinner in not showing on user search items.
+1. Progress simulation spinner is not showing on user searching items.
 
 # Things that I could improve or fix if I had more time
 1. Make website has more responsive, interactive, atractive.
