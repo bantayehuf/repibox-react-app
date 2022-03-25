@@ -1,6 +1,7 @@
 {
   "name": "repibox",
   "version": "0.1.0",
+  "author": "Bantayehu F <bantayehuf@gmail.com>",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.0",
